@@ -1,11 +1,16 @@
-export default function Ship(length, sunk) {
+export default function Ship(length, name) {
   this.length = length;
-  this.sunk = sunk;
-  this.hit = (position) => {
-    const hit = [];
-    hit.push(position);
+  this.name = name;
+  this.hit = [];
+  this.hitF = (x, y) => {
+    const hitPosition = [x, y];
+    this.hit.push(hitPosition);
+    return this.hit;
   };
   this.isSunk = () => {
-    // idk what to do here
+    if (length === this.hit.length) {
+      return true;
+    }
+    return false;
   };
 }
