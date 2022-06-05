@@ -49,5 +49,4 @@ test("if ship is sunk", () => {
   gameboard.reciveAttack(1, 4);
   gameboard.reciveAttack(1, 5);
   gameboard.reciveAttack(1, 6);
-  gameboard
 });
