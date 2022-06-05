@@ -5,9 +5,12 @@
 }
 
 .header {
-    font-size: 40px;
+    font-size: 35px;
+    color: rgb(51, 50, 50);
     font-weight: 500;
     margin-top: 20px;
+    font-family: "Press Start 2P";
+    letter-spacing: -3px;
 }
 
 .wrapper {
@@ -15,7 +18,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 80px;
+    gap: 100px;
 }
 
 .game-wrapper {

@@ -38,7 +38,7 @@ playerGameboard.board.forEach((x) => {
   x.forEach((y) => {
     if (y.length) {
       const ship = document.getElementById(`player${playerGameboard.board.indexOf(x)},${x.indexOf(y)}`);
-      ship.style.backgroundColor = "gray";
+      ship.style.backgroundColor = "rgb(163, 163, 163)";
     }
   });
 });
@@ -131,7 +131,7 @@ computerGameboard.computerBoard.forEach((row) => {
     // delete later
     if (square.length) {
       const ship = document.getElementById(`computer${computerGameboard.computerBoard.indexOf(row)},${row.indexOf(square)}`);
-      ship.style.backgroundColor = "gray";
+      ship.style.backgroundColor = "rgb(163, 163, 163)";
     }
     const x = computerGameboard.computerBoard.indexOf(row);
     const y = row.indexOf(square);
@@ -155,7 +155,7 @@ computerGameboard.computerBoard.forEach((row) => {
                 // check if ship is sunk
                 if (ySquare[0].isSunk()) {
                   const ship = document.getElementById(`computer${computerGameboard.computerBoard.indexOf(xRow)},${xRow.indexOf(ySquare)}`);
-                  ship.style.backgroundColor = "gray";
+                  ship.style.backgroundColor = "rgb(163, 163, 163)";
                 }
               }
             });
