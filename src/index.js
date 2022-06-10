@@ -29,10 +29,10 @@ renderGameBoard("computer");
 const playerGameboard = new GameBoard();
 // place ships on player board
 playerGameboard.placeShip(5, "carrier", 1, 2, playerGameboard.board, "horizontal");
-playerGameboard.placeShip(4, "battleship", 7, 3, playerGameboard.board, "horizontal");
-playerGameboard.placeShip(3, "cruiser", 4, 7, playerGameboard.board, "horizontal");
-playerGameboard.placeShip(3, "submarine", 5, 1, playerGameboard.board, "vertical");
-playerGameboard.placeShip(2, "destroyer", 3, 5, playerGameboard.board, "vertical");
+playerGameboard.placeShip(4, "battleship", 4, 5, playerGameboard.board, "horizontal");
+playerGameboard.placeShip(3, "cruiser", 7, 7, playerGameboard.board, "horizontal");
+playerGameboard.placeShip(3, "submarine", 5, 3, playerGameboard.board, "vertical");
+playerGameboard.placeShip(2, "destroyer", 8, 5, playerGameboard.board, "vertical");
 // color each ship gray
 playerGameboard.board.forEach((x) => {
   x.forEach((y) => {
@@ -79,6 +79,7 @@ function computerAttack() {
         expression = playerSquare[0].hit.find((hitF) => hitF.includes(player.x)
         && hitF.includes(player.y));
       }
+      console.log(expression);
     }
     playerDomSquare = document.getElementById(`player${player.x},${player.y}`);
     // change color to red if its ship
@@ -91,6 +92,7 @@ function computerAttack() {
       player.computerRandomAttack(playerGameboard.board);
     }
   }
+  console.log(playerGameboard.board);
 }
 
 function isGameOver(gameboard, someBoard, player) {
@@ -128,7 +130,7 @@ function isGameOver(gameboard, someBoard, player) {
 
 computerGameboard.computerBoard.forEach((row) => {
   row.forEach((square) => {
-    // delete later
+    // delete later, colors each ship gray for me too see and debug more easily
     if (square.length) {
       const ship = document.getElementById(`computer${computerGameboard.computerBoard.indexOf(row)},${row.indexOf(square)}`);
       ship.style.backgroundColor = "rgb(163, 163, 163)";
