@@ -65,21 +65,22 @@ function computerAttack() {
     let expression;
     // if its ship, expression to pass in while loop.returns array if ship is hit and wont pass loop
     if (playerSquare[0] !== "miss") {
-      expression = playerSquare[0].hit.find((hitF) => hitF.includes(player.x)
-      && hitF.includes(player.y));
+      expression = playerSquare[0].hit.find((hitF) => hitF[0] === player.x
+      && hitF[1] === player.y);
     }
     // if its not empty and has miss in it or ship is hit will generate new coordinates
     while ((playerSquare.length && playerSquare.includes("miss")) || (playerSquare.length && expression)) {
       // new coordinates
       player = new Player();
+      console.log(player.x, player.y);
       playerSquare = playerGameboard.board[player.x][player.y];
       // update expression for loop to check again
       if (!playerSquare.includes("miss") && playerSquare.length) {
         // eslint-disable-next-line no-loop-func
-        expression = playerSquare[0].hit.find((hitF) => hitF.includes(player.x)
-        && hitF.includes(player.y));
+        expression = playerSquare[0].hit.find((hitF) => hitF[0] === player.x
+      && hitF[1] === player.y);
+        console.log(expression)
       }
-      console.log(expression);
     }
     playerDomSquare = document.getElementById(`player${player.x},${player.y}`);
     // change color to red if its ship
@@ -92,10 +93,11 @@ function computerAttack() {
       player.computerRandomAttack(playerGameboard.board);
     }
   }
-  console.log(playerGameboard.board);
 }
 
 function isGameOver(gameboard, someBoard, player) {
+  const win = document.querySelector(".win");
+  const modal = document.querySelector(".modal");
   let carrierIsSunk;
   let battleshipIsSunk;
   let cruiserIsSunk;
@@ -119,9 +121,7 @@ function isGameOver(gameboard, someBoard, player) {
       }
     });
   });
-  if (carrierIsSunk && battleshipIsSunk && cruiserIsSunk && submarineIsSunk && destroyerIsSunk) {
-    const win = document.querySelector(".win");
-    const modal = document.querySelector(".modal");
+  if (carrierIsSunk && battleshipIsSunk && cruiserIsSunk && submarineIsSunk && destroyerIsSunk && modal.style.display !== "block") {
     // eslint-disable-next-line no-unused-expressions
     player === "player" ? win.textContent = "You Win" : win.textContent = "Computer Wins";
     modal.style.display = "block";
@@ -191,3 +191,7 @@ playAgain.addEventListener("click", () => {
   // eslint-disable-next-line no-restricted-globals
   location.reload();
 });
+
+// const array = [[7, 8], [7, 7]];
+
+// console.log(array.find((hitF) => hitF.includes(7) && hitF.includes(7)));
