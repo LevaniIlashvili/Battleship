@@ -24,5 +24,43 @@
             <button class="play-again">Play Again</button>
         </div>
     </div>
+    <div class="place-ships-modal">
+        <div class="place-ships-modal-content">
+            <h1 class="ship-placer-header">Drag and drop ships on the board(double click to rotate)</h1>
+            <div class="ship-placer-wrapper">
+                <div class="modal-board"></div>
+                <div class="ships">
+                    <div class="carrier ship horizontal" id="carrier" draggable="true">
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                    </div>
+                    <div class="battleship ship horizontal" id="battleship" draggable="true">
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                    </div>
+                    <div class="cruiser ship horizontal" id="cruiser" draggable="true">
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                    </div>
+                    <div class="submarine ship horizontal" id="submarine" draggable="true">
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                    </div>
+                    <div class="destroyer ship horizontal" id="destroyer" draggable="true">
+                        <div class="ship-squares"></div>
+                        <div class="ship-squares"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="start">start</button>
+        </div>
+    </div>
 </body>
 </html>
