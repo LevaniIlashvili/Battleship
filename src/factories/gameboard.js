@@ -76,10 +76,86 @@ export default function GameBoard() {
     return board;
   };
   this.randomizeComputerBoard = () => {
-    this.placeShip(5, "carrier", 1, 2, this.computerBoard, "horizontal");
-    this.placeShip(4, "battleship", 4, 6, this.computerBoard, "horizontal");
-    this.placeShip(3, "cruiser", 7, 2, this.computerBoard, "horizontal");
-    this.placeShip(3, "submarine", 7, 6, this.computerBoard, "vertical");
-    this.placeShip(2, "destroyer", 4, 1, this.computerBoard, "vertical");
+    const directionArr = ["horizontal", "vertical"];
+    let z = Math.floor(Math.random() * 2);
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    if (directionArr[z] === "horizontal") {
+      while (y > 5) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    } else {
+      while (x > 5) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    }
+    this.placeShip(5, "carrier", x, y, this.computerBoard, directionArr[z]);
+
+    z = Math.floor(Math.random() * 2);
+    x = Math.floor(Math.random() * 10);
+    y = Math.floor(Math.random() * 10);
+    if (directionArr[z] === "horizontal") {
+      while (y > 4 || this.computerBoard[x][y].length || this.computerBoard[x][y + 1].length
+        || this.computerBoard[x][y + 2].length || this.computerBoard[x][y + 3].length
+        || this.computerBoard[x][y + 4].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    } else {
+      while (x > 4 || this.computerBoard[x][y].length || this.computerBoard[x + 1][y].length
+        || this.computerBoard[x + 2][y].length || this.computerBoard[x + 3][y].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    }
+    this.placeShip(4, "battleship", x, y, this.computerBoard, directionArr[z]);
+
+    z = Math.floor(Math.random() * 2);
+    x = Math.floor(Math.random() * 10);
+    y = Math.floor(Math.random() * 10);
+    if (directionArr[z] === "horizontal") {
+      while (y > 3 || this.computerBoard[x][y].length || this.computerBoard[x][y + 1].length
+        || this.computerBoard[x][y + 2].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    } else {
+      while (x > 3 || this.computerBoard[x][y].length || this.computerBoard[x + 1][y].length
+        || this.computerBoard[x + 2][y].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    }
+    this.placeShip(3, "cruiser", x, y, this.computerBoard, directionArr[z]);
+
+    if (directionArr[z] === "horizontal") {
+      while (y > 3 || this.computerBoard[x][y].length || this.computerBoard[x][y + 1].length
+        || this.computerBoard[x][y + 2].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    } else {
+      while (x > 3 || this.computerBoard[x][y].length || this.computerBoard[x + 1][y].length
+        || this.computerBoard[x + 2][y].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    }
+    this.placeShip(3, "submarine", x, y, this.computerBoard, directionArr[z]);
+
+    if (directionArr[z] === "horizontal") {
+      while (y > 2 || this.computerBoard[x][y].length || this.computerBoard[x][y + 1].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    } else {
+      while (x > 2 || this.computerBoard[x][y].length || this.computerBoard[x + 1][y].length) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+    }
+    this.placeShip(2, "destroyer", x, y, this.computerBoard, directionArr[z]);
   };
 }

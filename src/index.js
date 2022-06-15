@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import "./style.css";
 import GameBoard from "./factories/gameboard";
 import Player from "./factories/player";
@@ -27,20 +28,170 @@ renderGameBoard("player");
 renderGameBoard("computer");
 
 const playerGameboard = new GameBoard();
-// place ships on player board
-playerGameboard.placeShip(5, "carrier", 1, 2, playerGameboard.board, "horizontal");
-playerGameboard.placeShip(4, "battleship", 4, 5, playerGameboard.board, "horizontal");
-playerGameboard.placeShip(3, "cruiser", 7, 7, playerGameboard.board, "horizontal");
-playerGameboard.placeShip(3, "submarine", 5, 3, playerGameboard.board, "vertical");
-playerGameboard.placeShip(2, "destroyer", 8, 5, playerGameboard.board, "vertical");
-// color each ship gray
-playerGameboard.board.forEach((x) => {
-  x.forEach((y) => {
-    if (y.length) {
-      const ship = document.getElementById(`player${playerGameboard.board.indexOf(x)},${x.indexOf(y)}`);
-      ship.style.backgroundColor = "rgb(163, 163, 163)";
+
+// render board when game starts for placing ships
+function renderShipPlaceBoard() {
+  for (let i = 0; i < 10; i += 1) {
+    const x = document.createElement("div");
+    x.classList.add("place-x");
+    x.style.width = "350px";
+    x.style.height = "35px";
+    const board = document.querySelector(".modal-board");
+    board.appendChild(x);
+    for (let j = 0; j < 10; j += 1) {
+      const y = document.createElement("div");
+      y.classList.add("place-y");
+      y.setAttribute("id", `${0 + i},${0 + j}`);
+      y.style.width = "35px";
+      y.style.height = "35px";
+      x.appendChild(y);
+    }
+  }
+}
+
+renderShipPlaceBoard();
+
+const ships = document.querySelectorAll(".ship");
+const squares = document.querySelectorAll(".place-y");
+ships.forEach((ship) => {
+  // remove ship when dragged
+  ship.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("text/plain", e.target.id);
+  });
+  // rotate ship when dblclicked
+  ship.addEventListener("dblclick", () => {
+    if (!ship.classList.contains("vertical")) {
+      ship.style.flexDirection = "column";
+      ship.classList.remove("horizontal");
+      ship.classList.add("vertical");
+      if (ship.id === "carrier") {
+        ship.style.height = "175px";
+        ship.style.width = "35px";
+      } else if (ship.id === "battleship") {
+        ship.style.height = "140px";
+        ship.style.width = "35px";
+      } else if (ship.id === "cruiser" || ship.id === "submarine") {
+        ship.style.height = "105px";
+        ship.style.width = "35px";
+      } else if (ship.id === "destroyer") {
+        ship.style.height = "70px";
+        ship.style.width = "35px";
+      }
+    } else if (ship.classList.contains("vertical")) {
+      ship.style.flexDirection = "row";
+      ship.classList.remove("vertical");
+      ship.classList.add("horizontal");
+      if (ship.id === "carrier") {
+        ship.style.height = "35px";
+        ship.style.width = "175px";
+      } else if (ship.id === "battleship") {
+        ship.style.height = "35px";
+        ship.style.width = "140px";
+      } else if (ship.id === "cruiser" || ship.id === "submarine") {
+        ship.style.height = "35px";
+        ship.style.width = "105px";
+      } else if (ship.id === "destroyer") {
+        ship.style.height = "35px";
+        ship.style.width = "70  px";
+      }
     }
   });
+});
+
+// dragging functional
+squares.forEach((square) => {
+  square.addEventListener("dragenter", (e) => {
+    e.target.classList.add("drag-over");
+    e.preventDefault();
+  });
+  square.addEventListener("dragover", (e) => {
+    e.target.classList.add("drag-over");
+    e.preventDefault();
+  });
+  square.addEventListener("dragleave", (e) => {
+    e.target.classList.remove("drag-over");
+  });
+  square.addEventListener("drop", (e) => {
+    e.target.classList.remove("drag-over");
+
+    // get the draggable element
+    const id = e.dataTransfer.getData("text/plain");
+    const draggable = document.getElementById(id);
+
+    if (e.target.classList.value === "place-y") {
+      // add ships to gameboard
+      const x = parseInt(e.target.id.slice(0, 1), 10);
+      const y = parseInt(e.target.id.slice(2), 10);
+      // check ship direction, name and if its placed on board, not outside of it
+      if (draggable.classList.contains("horizontal")) {
+        if (draggable.id === "carrier" && playerGameboard.board[0][y + 4]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(5, "carrier", x, y, playerGameboard.board, "horizontal");
+        } else if (draggable.id === "battleship" && playerGameboard.board[0][y + 3]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(4, "battleship", x, y, playerGameboard.board, "horizontal");
+        } else if (draggable.id === "cruiser" && playerGameboard.board[0][y + 2]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(3, "cruiser", x, y, playerGameboard.board, "horizontal");
+        } else if (draggable.id === "submarine" && playerGameboard.board[0][y + 2]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(3, "submarine", x, y, playerGameboard.board, "horizontal");
+        } else if (draggable.id === "destroyer" && playerGameboard.board[0][y + 1]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(2, "destroyer", x, y, playerGameboard.board, "horizontal");
+        }
+      } else if (draggable.classList.contains("vertical")) {
+        if (draggable.id === "carrier" && playerGameboard.board[x + 4]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(5, "carrier", x, y, playerGameboard.board, "vertical");
+        } else if (draggable.id === "battleship" && playerGameboard.board[x + 3]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(4, "battleship", x, y, playerGameboard.board, "vertical");
+        } else if (draggable.id === "cruiser" && playerGameboard.board[x + 2]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(3, "cruiser", x, y, playerGameboard.board, "vertical");
+        } else if (draggable.id === "submarine" && playerGameboard.board[x + 2]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(3, "submarine", x, y, playerGameboard.board, "vertical");
+        } else if (draggable.id === "destroyer" && playerGameboard.board[x + 1]) {
+          e.target.appendChild(draggable);
+          playerGameboard.placeShip(2, "destroyer", x, y, playerGameboard.board, "vertical");
+        }
+      }
+    }
+  });
+});
+
+const shipsContainer = document.querySelector(".ships");
+shipsContainer.addEventListener("dragover", (e) => {
+  e.preventDefault();
+});
+shipsContainer.addEventListener("drop", (e) => {
+  // get the draggable element
+  const id = e.dataTransfer.getData("text/plain");
+  const draggable = document.getElementById(id);
+
+  // add it to the drop target
+  if (e.target.classList.value === "ships") {
+    e.target.appendChild(draggable);
+  }
+});
+
+// start game and color ships gray on gameboard
+const start = document.querySelector(".start");
+start.addEventListener("click", () => {
+  if (!shipsContainer.children.length) {
+    const placeShipsModal = document.querySelector(".place-ships-modal");
+    placeShipsModal.style.display = "none";
+    playerGameboard.board.forEach((ex) => {
+      ex.forEach((ey) => {
+        if (ey.length) {
+          const ship = document.getElementById(`player${playerGameboard.board.indexOf(ex)},${ex.indexOf(ey)}`);
+          ship.style.backgroundColor = "rgb(163, 163, 163)";
+        }
+      });
+    });
+  }
 });
 
 // attacking computer board
@@ -48,12 +199,13 @@ const computerGameboard = new GameBoard();
 computerGameboard.randomizeComputerBoard();
 
 function computerAttack() {
+  // create player to generate random numbers for x and y
   let player = new Player();
 
   let playerSquare = playerGameboard.board[player.x][player.y];
   let playerDomSquare = document.getElementById(`player${player.x},${player.y}`);
   // if its ship and ship isnt hit
-  if (!playerSquare.includes("miss") && playerSquare.length && !playerSquare[0].hit.find((hitF) => hitF.includes(player.x) && hitF.includes(player.y))) {
+  if (!playerSquare.includes("miss") && playerSquare.length && !playerSquare[0].hit.find((hitF) => hitF[0] === player.x && hitF[1] === player.y)) {
     playerDomSquare.style.backgroundColor = "rgb(255, 133, 133)";
     player.computerRandomAttack(playerGameboard.board);
     // if its emtpty
@@ -78,8 +230,7 @@ function computerAttack() {
       if (!playerSquare.includes("miss") && playerSquare.length) {
         // eslint-disable-next-line no-loop-func
         expression = playerSquare[0].hit.find((hitF) => hitF[0] === player.x
-      && hitF[1] === player.y);
-        console.log(expression)
+        && hitF[1] === player.y);
       }
     }
     playerDomSquare = document.getElementById(`player${player.x},${player.y}`);
@@ -130,20 +281,16 @@ function isGameOver(gameboard, someBoard, player) {
 
 computerGameboard.computerBoard.forEach((row) => {
   row.forEach((square) => {
-    // delete later, colors each ship gray for me too see and debug more easily
-    if (square.length) {
-      const ship = document.getElementById(`computer${computerGameboard.computerBoard.indexOf(row)},${row.indexOf(square)}`);
-      ship.style.backgroundColor = "rgb(163, 163, 163)";
-    }
     const x = computerGameboard.computerBoard.indexOf(row);
     const y = row.indexOf(square);
     const div = document.getElementById(`computer${x},${y}`);
     div.addEventListener("click", () => {
       // player attack
       // check if square is hit already and missed, check if ship is there and check if ship is hit
-      if (!square.includes("miss") && square.length && !square[0].hit.find((hitF) => hitF.includes(x) && hitF.includes(y))) {
+      if (!square.includes("miss") && square.length && !square[0].hit.find((hitF) => hitF[0] === x && hitF[1] === y)) {
         div.style.backgroundColor = "rgb(255, 133, 133";
         computerGameboard.reciveAttack(x, y, computerGameboard.computerBoard);
+        console.log(computerGameboard.computerBoard);
 
         isGameOver(computerGameboard, "computerBoard", "player");
 
